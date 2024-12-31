@@ -1,0 +1,4 @@
+SpeechRecognition
+pygame
+transformers
+flask

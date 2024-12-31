@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detection & Music Player</title>
+    <link rel="stylesheet" href="static\styles.css">
+</head>
+<body>
+
+    <h1>Emotion-Based Frequency <br>Recommendation and Healing System <br>Using Speech Analysis</h1>
+    <button id="startButton">Start Detection</button>
+    <button id="stopButton">Stop Music</button>
+
+    <div id="status"></div>
+
+    <script>
+        const apiUrl = window.location.origin;  // Automatically use the current server's URL
+
+        // Event listener for start detection
+        document.getElementById('startButton').addEventListener('click', function() {
+            document.getElementById('status').textContent = "Detecting emotion...";
+            const url = `${apiUrl}/start-detection`;  // Flask endpoint URL
+            console.log("Sending request to: " + url);
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('status').textContent = "Emotion detected: " + data.emotion + ". Playing music...";
+                    } else {
+                        document.getElementById('status').textContent = "Error: " + data.message;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('status').textContent = "Error: Unable to detect emotion.";
+                    console.log("Error:", error);
+                });
+        });
+
+        // Event listener for stop music
+        document.getElementById('stopButton').addEventListener('click', function() {
+            document.getElementById('status').textContent = "Stopping music...";
+            const url = `${apiUrl}/stop-music`;  // Flask endpoint URL
+            console.log("Sending request to: " + url);
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('status').textContent = "Music stopped.";
+                    } else {
+                        document.getElementById('status').textContent = "Error: " + data.message;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('status').textContent = "Error: Unable to stop music.";
+                    console.log("Error:", error);
+                });
+        });
+    </script>
+    
+</body>
+</html>
